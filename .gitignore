@@ -1,0 +1,87 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Models and weights
+models/
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.bin
+
+# Checkpoints
+checkpoints/
+checkpoint/
+outputs/
+
+# Datasets
+data/
+dataset/
+datasets/
+*.npz
+*.jsonl
+
+# Generated outputs
+generated_videos/
+generated_videos_test/
+cache/
+*.mp4
+*.avi
+*.mov
+
+# Logs
+logs/
+*.log
+training_log.jsonl
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Conda/pip
+*.conda
+*.whl
+
+# HuggingFace cache
+.cache/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
