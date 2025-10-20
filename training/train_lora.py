@@ -15,6 +15,9 @@ from __future__ import annotations
 import argparse
 import os
 from pathlib import Path
+
+# Suppress tokenizers parallelism warning when forking processes
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
@@ -175,227 +178,241 @@ def train(args):
     # Training log
     log_file = output_dir / "training_log.jsonl"
 
-    accelerator.print(f"\nStarting training: {num_epochs} epochs, max {args.max_steps} steps")
-    accelerator.print(f"Batch size: {args.batch_size}, Learning rate: {args.lr}")
-    accelerator.print(f"LoRA rank: {args.lora_rank}, alpha: {args.lora_alpha}\n")
+    try:
+        accelerator.print(f"\nStarting training: {num_epochs} epochs, max {args.max_steps} steps")
+        accelerator.print(f"Batch size: {args.batch_size}, Learning rate: {args.lr}")
+        accelerator.print(f"LoRA rank: {args.lora_rank}, alpha: {args.lora_alpha}\n")
     
-    optimizer.zero_grad(set_to_none=True)
+        optimizer.zero_grad(set_to_none=True)
 
-    for epoch in range(num_epochs):
-        epoch_loss = 0.0
-        num_batches = 0
+        for epoch in range(num_epochs):
+            epoch_loss = 0.0
+            num_batches = 0
 
-        transform_suffix = []
-        if args.frame_subsample > 1:
-            transform_suffix.append(f"fs{args.frame_subsample}")
-        if args.resize_height and args.resize_width:
-            transform_suffix.append(f"rs{args.resize_height}x{args.resize_width}")
-        cache_suffix = ("_" + "_".join(transform_suffix)) if transform_suffix else ""
-
-        pbar = tqdm(dl, desc=f"Epoch {epoch+1}/{num_epochs}", disable=not accelerator.is_local_main_process)
-        for batch in pbar:
-            frames = batch["frames"].to(device)  # (B, T, C, H, W)
-            prompts = batch["prompts"]
-            cache_ids = batch.get("cache_ids")
-            
-            batch_size = frames.shape[0]
-
+            transform_suffix = []
             if args.frame_subsample > 1:
-                frames = frames[:, ::args.frame_subsample]
-
+                transform_suffix.append(f"fs{args.frame_subsample}")
             if args.resize_height and args.resize_width:
-                bsz, frames_t, channels, height, width = frames.shape
-                frames = frames.view(bsz * frames_t, channels, height, width)
-                frames = F.interpolate(
-                    frames,
-                    size=(args.resize_height, args.resize_width),
-                    mode="bilinear",
-                    align_corners=False,
-                )
-                frames = frames.view(bsz, frames_t, channels, args.resize_height, args.resize_width)
+                transform_suffix.append(f"rs{args.resize_height}x{args.resize_width}")
+            cache_suffix = ("_" + "_".join(transform_suffix)) if transform_suffix else ""
 
-            # Encode frames to latents with optional caching
-            use_cache = latent_cache_dir is not None and cache_ids is not None
-            if use_cache:
-                latents_list = [None] * batch_size
-                cache_paths = []
-                missing_indices = []
+            pbar = tqdm(dl, desc=f"Epoch {epoch+1}/{num_epochs}", disable=not accelerator.is_local_main_process)
+            for batch in pbar:
+                frames = batch["frames"].to(device)  # (B, T, C, H, W)
+                prompts = batch["prompts"]
+                cache_ids = batch.get("cache_ids")
+                
+                batch_size = frames.shape[0]
 
-                latent_channels = getattr(vae.config, "latent_channels", 16)
+                if args.frame_subsample > 1:
+                    frames = frames[:, ::args.frame_subsample]
 
-                for idx in range(batch_size):
-                    cache_id = cache_ids[idx]
-                    cache_path = latent_cache_dir / f"{cache_id}{cache_suffix}.pt" if cache_id else None
-                    cache_paths.append(cache_path)
-                    if cache_path and cache_path.exists():
-                        cached_latent = torch.load(cache_path, map_location="cpu")
-                        cached_latent = cached_latent.to(device=device, dtype=dtype)
-                        if cached_latent.ndim == 4 and cached_latent.shape[0] != latent_channels and cached_latent.shape[1] == latent_channels:
-                            cached_latent = cached_latent.permute(1, 0, 2, 3)
-                        latents_list[idx] = cached_latent
-                    else:
-                        missing_indices.append(idx)
+                if args.resize_height and args.resize_width:
+                    bsz, frames_t, channels, height, width = frames.shape
+                    frames = frames.view(bsz * frames_t, channels, height, width)
+                    frames = F.interpolate(
+                        frames,
+                        size=(args.resize_height, args.resize_width),
+                        mode="bilinear",
+                        align_corners=False,
+                    )
+                    frames = frames.view(bsz, frames_t, channels, args.resize_height, args.resize_width)
 
-                if missing_indices:
-                    frames_subset = frames[missing_indices].permute(0, 2, 1, 3, 4)
+                # Encode frames to latents with optional caching
+                use_cache = latent_cache_dir is not None and cache_ids is not None
+                if use_cache:
+                    latents_list = [None] * batch_size
+                    cache_paths = []
+                    missing_indices = []
+
+                    latent_channels = getattr(vae.config, "latent_channels", 16)
+
+                    for idx in range(batch_size):
+                        cache_id = cache_ids[idx]
+                        cache_path = latent_cache_dir / f"{cache_id}{cache_suffix}.pt" if cache_id else None
+                        cache_paths.append(cache_path)
+                        if cache_path and cache_path.exists():
+                            cached_latent = torch.load(cache_path, map_location="cpu")
+                            cached_latent = cached_latent.to(device=device, dtype=dtype)
+                            if cached_latent.ndim == 4 and cached_latent.shape[0] != latent_channels and cached_latent.shape[1] == latent_channels:
+                                cached_latent = cached_latent.permute(1, 0, 2, 3)
+                            latents_list[idx] = cached_latent
+                        else:
+                            missing_indices.append(idx)
+
+                    if missing_indices:
+                        frames_subset = frames[missing_indices].permute(0, 2, 1, 3, 4)
+                        with torch.no_grad():
+                            latents_subset = vae.encode(frames_subset.to(torch.float32)).latent_dist.sample()
+                            latents_subset = latents_subset * scaling_factor
+                            latents_subset = latents_subset.to(dtype)
+
+                        for offset, idx in enumerate(missing_indices):
+                            lat = latents_subset[offset]
+                            latents_list[idx] = lat
+                            cache_path = cache_paths[idx]
+                            if cache_path and not cache_path.exists():
+                                torch.save(lat.detach().to("cpu", dtype=torch.float16), cache_path)
+
+                    latents = torch.stack(latents_list, dim=0)
+                else:
+                    frames_vae = frames.permute(0, 2, 1, 3, 4)
                     with torch.no_grad():
-                        latents_subset = vae.encode(frames_subset.to(torch.float32)).latent_dist.sample()
-                        latents_subset = latents_subset * scaling_factor
-                        latents_subset = latents_subset.to(dtype)
+                        latents = vae.encode(frames_vae.to(torch.float32)).latent_dist.sample()
+                        latents = latents * scaling_factor
+                        latents = latents.to(dtype)
 
-                    for offset, idx in enumerate(missing_indices):
-                        lat = latents_subset[offset]
-                        latents_list[idx] = lat
-                        cache_path = cache_paths[idx]
-                        if cache_path and not cache_path.exists():
-                            torch.save(lat.detach().to("cpu", dtype=torch.float16), cache_path)
-
-                latents = torch.stack(latents_list, dim=0)
-            else:
-                frames_vae = frames.permute(0, 2, 1, 3, 4)
                 with torch.no_grad():
-                    latents = vae.encode(frames_vae.to(torch.float32)).latent_dist.sample()
-                    latents = latents * scaling_factor
-                    latents = latents.to(dtype)
+                    prompt_embeds, _ = pipe.encode_prompt(
+                        prompt=prompts,
+                        device=device,
+                        num_videos_per_prompt=1,
+                        do_classifier_free_guidance=False
+                    )
+                
+                step_completed = True
 
-            with torch.no_grad():
-                prompt_embeds, _ = pipe.encode_prompt(
-                    prompt=prompts,
-                    device=device,
-                    num_videos_per_prompt=1,
-                    do_classifier_free_guidance=False
-                )
+                with accelerator.accumulate(pipe.transformer):
+                    # Sample noise
+                    noise = torch.randn_like(latents)
+
+                    # Sample random timesteps for flow matching
+                    # Flow matching uses timesteps in range [0, 1] representing interpolation
+                    u = torch.rand(batch_size, device=device)
+
+                    # Scale to scheduler's timestep range
+                    indices = (u * noise_scheduler.config.num_train_timesteps).long()
+                    indices = torch.clamp(indices, 0, noise_scheduler.config.num_train_timesteps - 1)
+                    indices_cpu = indices.cpu()
+                    timesteps = noise_scheduler.timesteps[indices_cpu].to(device)
+
+                    # Flow matching: use scheduler sigmas to blend data and noise (velocity target)
+                    sigmas = get_sigmas(indices_cpu, n_dim=latents.ndim, dtype=latents.dtype)
+                    noisy_latents = (1.0 - sigmas) * latents + sigmas * noise
+
+                    # Forward pass through transformer
+                    model_pred = pipe.transformer(
+                        hidden_states=noisy_latents,
+                        timestep=timesteps,
+                        encoder_hidden_states=prompt_embeds,
+                        return_dict=False
+                    )[0]
+
+                    # Compute loss
+                    # For flow matching, the target is the velocity field: noise - data
+                    target = noise - latents
+                    loss = F.mse_loss(model_pred.float(), target.float(), reduction="mean")
+                    loss_value = loss.item()
+
+                    accelerator.backward(loss)
+
+                    if accelerator.sync_gradients and args.max_grad_norm > 0:
+                        accelerator.clip_grad_norm_(pipe.transformer.parameters(), args.max_grad_norm)
+
+                    optimizer.step()
+                    optimizer.zero_grad(set_to_none=True)
+
+                    step_completed = accelerator.sync_gradients
+
+                # Update metrics
+                if step_completed:
+                    global_step += 1
+                    epoch_loss += loss_value
+                    num_batches += 1
+
+                    # Update progress bar
+                    if accelerator.is_local_main_process:
+                        pbar.set_postfix({
+                            'loss': f'{loss_value:.4f}',
+                            'avg_loss': f'{epoch_loss/num_batches:.4f}',
+                            'step': global_step
+                        })
+
+                    # Log to file
+                    if accelerator.is_main_process:
+                        log_entry = {
+                            'step': global_step,
+                            'epoch': epoch + 1,
+                            'loss': loss_value,
+                            'timestamp': datetime.now().isoformat()
+                        }
+                        with open(log_file, 'a') as f:
+                            f.write(json.dumps(log_entry) + '\n')
+
+                    # Save checkpoint
+                    if global_step % args.save_every == 0:
+                        accelerator.wait_for_everyone()
+                        if accelerator.is_main_process:
+                            optimizer_state = optimizer.state_dict()
+                            checkpoint_path = output_dir / f"lora_step{global_step}.pt"
+                            accelerator.print(f"\nSaving checkpoint to {checkpoint_path}")
+
+                            unwrapped = accelerator.unwrap_model(pipe.transformer)
+                            lora_state_dict = {
+                                k: v for k, v in unwrapped.state_dict().items()
+                                if 'lora' in k
+                            }
+
+                            checkpoint = {
+                                'lora_state_dict': lora_state_dict,
+                                'step': global_step,
+                                'epoch': epoch + 1,
+                                'optimizer_state_dict': optimizer_state,
+                                'loss': loss_value,
+                                'args': vars(args)
+                            }
+                            accelerator.save(checkpoint, checkpoint_path)
+                        accelerator.wait_for_everyone()
+
+                    # Check max steps
+                    if global_step >= args.max_steps:
+                        accelerator.wait_for_everyone()
+                        if accelerator.is_main_process:
+                            optimizer_state = optimizer.state_dict()
+                            accelerator.print(f"\nReached max steps ({args.max_steps}), finishing training")
+
+                            # Save final checkpoint
+                            final_path = output_dir / f"lora_final_step{global_step}.pt"
+                            unwrapped = accelerator.unwrap_model(pipe.transformer)
+                            lora_state_dict = {
+                                k: v for k, v in unwrapped.state_dict().items()
+                                if 'lora' in k
+                            }
+                            checkpoint = {
+                                'lora_state_dict': lora_state_dict,
+                                'step': global_step,
+                                'epoch': epoch + 1,
+                                'optimizer_state_dict': optimizer_state,
+                                'loss': loss_value,
+                                'args': vars(args)
+                            }
+                            accelerator.save(checkpoint, final_path)
+                            accelerator.print(f"Final checkpoint saved to {final_path}")
+                        accelerator.wait_for_everyone()
+                        return
             
-            step_completed = True
+            # End of epoch summary
+            loss_tensor = torch.tensor([epoch_loss], device=device)
+            batch_tensor = torch.tensor([num_batches], device=device)
+            gathered_loss = accelerator.gather(loss_tensor)
+            gathered_batches = accelerator.gather(batch_tensor)
+            if accelerator.is_main_process:
+                total_batches = gathered_batches.sum().item()
+                avg_epoch_loss = gathered_loss.sum().item() / max(total_batches, 1)
+                accelerator.print(f"\nEpoch {epoch+1} completed. Average loss: {avg_epoch_loss:.4f}\n")
 
-            with accelerator.accumulate(pipe.transformer):
-                # Sample noise
-                noise = torch.randn_like(latents)
-
-                # Sample random timesteps for flow matching
-                # Flow matching uses timesteps in range [0, 1] representing interpolation
-                u = torch.rand(batch_size, device=device)
-
-                # Scale to scheduler's timestep range
-                indices = (u * noise_scheduler.config.num_train_timesteps).long()
-                indices = torch.clamp(indices, 0, noise_scheduler.config.num_train_timesteps - 1)
-                indices_cpu = indices.cpu()
-                timesteps = noise_scheduler.timesteps[indices_cpu].to(device)
-
-                # Flow matching: use scheduler sigmas to blend data and noise (velocity target)
-                sigmas = get_sigmas(indices_cpu, n_dim=latents.ndim, dtype=latents.dtype)
-                noisy_latents = (1.0 - sigmas) * latents + sigmas * noise
-
-                # Forward pass through transformer
-                model_pred = pipe.transformer(
-                    hidden_states=noisy_latents,
-                    timestep=timesteps,
-                    encoder_hidden_states=prompt_embeds,
-                    return_dict=False
-                )[0]
-
-                # Compute loss
-                # For flow matching, the target is the velocity field: noise - data
-                target = noise - latents
-                loss = F.mse_loss(model_pred.float(), target.float(), reduction="mean")
-                loss_value = loss.item()
-
-                accelerator.backward(loss)
-
-                if accelerator.sync_gradients and args.max_grad_norm > 0:
-                    accelerator.clip_grad_norm_(pipe.transformer.parameters(), args.max_grad_norm)
-
-                optimizer.step()
-                optimizer.zero_grad(set_to_none=True)
-
-                step_completed = accelerator.sync_gradients
-
-            # Update metrics
-            if step_completed:
-                global_step += 1
-                epoch_loss += loss_value
-                num_batches += 1
-
-                # Update progress bar
-                if accelerator.is_local_main_process:
-                    pbar.set_postfix({
-                        'loss': f'{loss_value:.4f}',
-                        'avg_loss': f'{epoch_loss/num_batches:.4f}',
-                        'step': global_step
-                    })
-
-                # Log to file
-                if accelerator.is_main_process:
-                    log_entry = {
-                        'step': global_step,
-                        'epoch': epoch + 1,
-                        'loss': loss_value,
-                        'timestamp': datetime.now().isoformat()
-                    }
-                    with open(log_file, 'a') as f:
-                        f.write(json.dumps(log_entry) + '\n')
-
-                # Save checkpoint
-                if global_step % args.save_every == 0:
-                    accelerator.wait_for_everyone()
-                    if accelerator.is_main_process:
-                        optimizer_state = optimizer.state_dict()
-                        checkpoint_path = output_dir / f"lora_step{global_step}.pt"
-                        accelerator.print(f"\nSaving checkpoint to {checkpoint_path}")
-
-                        unwrapped = accelerator.unwrap_model(pipe.transformer)
-                        lora_state_dict = {
-                            k: v for k, v in unwrapped.state_dict().items()
-                            if 'lora' in k
-                        }
-
-                        checkpoint = {
-                            'lora_state_dict': lora_state_dict,
-                            'step': global_step,
-                            'epoch': epoch + 1,
-                            'optimizer_state_dict': optimizer_state,
-                            'loss': loss_value,
-                            'args': vars(args)
-                        }
-                        accelerator.save(checkpoint, checkpoint_path)
-                    accelerator.wait_for_everyone()
-
-                # Check max steps
-                if global_step >= args.max_steps:
-                    accelerator.wait_for_everyone()
-                    if accelerator.is_main_process:
-                        optimizer_state = optimizer.state_dict()
-                        accelerator.print(f"\nReached max steps ({args.max_steps}), finishing training")
-
-                        # Save final checkpoint
-                        final_path = output_dir / f"lora_final_step{global_step}.pt"
-                        unwrapped = accelerator.unwrap_model(pipe.transformer)
-                        lora_state_dict = {
-                            k: v for k, v in unwrapped.state_dict().items()
-                            if 'lora' in k
-                        }
-                        checkpoint = {
-                            'lora_state_dict': lora_state_dict,
-                            'step': global_step,
-                            'epoch': epoch + 1,
-                            'optimizer_state_dict': optimizer_state,
-                            'loss': loss_value,
-                            'args': vars(args)
-                        }
-                        accelerator.save(checkpoint, final_path)
-                        accelerator.print(f"Final checkpoint saved to {final_path}")
-                    accelerator.wait_for_everyone()
-                    return
-        
-        # End of epoch summary
-        loss_tensor = torch.tensor([epoch_loss], device=device)
-        batch_tensor = torch.tensor([num_batches], device=device)
-        gathered_loss = accelerator.gather(loss_tensor)
-        gathered_batches = accelerator.gather(batch_tensor)
-        if accelerator.is_main_process:
-            total_batches = gathered_batches.sum().item()
-            avg_epoch_loss = gathered_loss.sum().item() / max(total_batches, 1)
-            accelerator.print(f"\nEpoch {epoch+1} completed. Average loss: {avg_epoch_loss:.4f}\n")
+    finally:
+        # Clean up distributed resources
+        try:
+            accelerator.end_training()
+        except Exception:
+            pass
+        try:
+            import torch.distributed as dist
+            if dist.is_initialized():
+                dist.destroy_process_group()
+        except Exception:
+            pass
 
     accelerator.wait_for_everyone()
 
