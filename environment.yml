@@ -1,0 +1,44 @@
+name: wan21
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - ffmpeg
+  # Install PyTorch + CUDA 11.8 via conda (matches recent stable wheels)
+  - pytorch
+  - torchvision
+  - pytorch-cuda=12.8
+  - cudatoolkit=12.8
+  # Helpful utilities
+  - git
+  - cmake
+  - make
+  - gcc_linux-64
+
+  # Python packages installed via pip to get latest versions from PyPI
+  - pip:
+    - --upgrade pip
+    - diffusers>=0.24.0
+    - transformers>=4.30.0
+    - accelerate>=0.22.0
+    - peft>=0.4.0
+    - safetensors
+    - huggingface-hub
+    - opencv-python
+    - tqdm
+    - numpy
+    - torchvision
+    - einops
+    - xformers>=0.0.20 ; extra optional speedups, may fail to build on some platforms
+    - bitsandbytes>=0.39.0 ; optional: only if you want 8-bit optim
+
+# Notes:
+# - This YAML installs PyTorch with CUDA 11.8. If your driver/CUDA runtime is older/newer, change
+#   `pytorch-cuda=11.8` to the appropriate version (e.g., 11.7 or 12.x) or install PyTorch via pip per
+#   https://pytorch.org/get-started/locally/
+# - xformers and bitsandbytes are optional and may require specific CUDA/toolchain support.
+# - After creating the env, run `pip install -r requirements.txt` if you prefer to use the pinned requirements file.

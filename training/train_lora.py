@@ -144,7 +144,8 @@ def train(args):
     
     # Prepare dataset and dataloader
     accelerator.print(f"Loading dataset from {args.manifest}")
-    ds = ClipDataset(args.manifest)
+    # Pass augmentation flags into the dataset (simple flip / color jitter)
+    ds = ClipDataset(args.manifest, random_flip=getattr(args, 'random_flip', False), color_jitter=getattr(args, 'color_jitter', 0.0))
     dl = DataLoader(
         ds, 
         batch_size=args.batch_size, 
@@ -169,6 +170,29 @@ def train(args):
     output_dir = Path(args.output_dir)
     if accelerator.is_main_process:
         output_dir.mkdir(parents=True, exist_ok=True)
+        # Apply environment-variable overrides (if any) so the saved config matches runtime
+        try:
+            env_rank = os.environ.get("LORA_RANK")
+            if env_rank is not None:
+                args.lora_rank = int(env_rank)
+        except Exception:
+            pass
+        try:
+            env_alpha = os.environ.get("LORA_ALPHA")
+            if env_alpha is not None:
+                args.lora_alpha = int(env_alpha)
+        except Exception:
+            pass
+        # boolean-ish flags for aug
+        if os.environ.get("RANDOM_FLIP") is not None:
+            args.random_flip = os.environ.get("RANDOM_FLIP") in ("1", "true", "True", "yes")
+        if os.environ.get("COLOR_JITTER") is not None:
+            try:
+                args.color_jitter = float(os.environ.get("COLOR_JITTER"))
+            except Exception:
+                pass
+
+        # Save run config after all finalizations so it reflects the effective runtime values
         config_path = output_dir / "config.json"
         with open(config_path, 'w') as f:
             json.dump(vars(args), f, indent=2)
@@ -461,6 +485,11 @@ def main():
     # Data loading
     parser.add_argument("--num_workers", type=int, default=2,
                         help="Number of dataloader workers")
+    # Simple augmentations to improve robustness during LoRA training
+    parser.add_argument("--random_flip", action='store_true',
+                        help="Enable random horizontal flip augmentation (p=0.5)")
+    parser.add_argument("--color_jitter", type=float, default=0.0,
+                        help="Simple brightness jitter multiplier magnitude (0.0-1.0)")
     
     args = parser.parse_args()
 

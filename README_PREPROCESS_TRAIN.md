@@ -1,3 +1,6 @@
+# conda activate /anvil/projects/x-soc250046/x-sishraq/.conda/envs/wan21 && export PYTHONUSERBASE=/anvil/projects/x-soc250046/x-sishraq/.local
+
+
 # Preprocess and LoRA training (smoke test)
 
 This document shows minimal commands to preprocess the Kaggle HAR videos into clips and run a smoke test training script that wires LoRA adapters to Wan2.1 UNet.

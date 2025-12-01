@@ -56,16 +56,21 @@ MODEL_ID="models/Wan2.1-T2V-1.3B-Local"
 MANIFEST="data/processed_full/train.jsonl"
 OUTPUT_DIR="checkpoints/lora_full"
 LATENT_CACHE_DIR="cache/latents_full"
-MAX_STEPS=1000
+# Increase total training steps for a full run; adjust as needed for your schedule
+MAX_STEPS=10000
 EPOCHS=10
 BATCH_SIZE=1
 LR=1e-4
-LORA_RANK=32
+# Increase LoRA capacity
+LORA_RANK=64
 LORA_ALPHA=32
 FRAME_SUBSAMPLE=2
 RESIZE_W=512
 RESIZE_H=320
 SAVE_EVERY=100
+# Simple augmentations to improve robustness
+RANDOM_FLIP_FLAG="--random_flip"
+COLOR_JITTER=0.08
 # -----------------------------------------------------------------------
 
 echo "Starting training with the following config:"
@@ -77,24 +82,45 @@ echo " frame_subsample: $FRAME_SUBSAMPLE, resize: ${RESIZE_W}x${RESIZE_H}"
 
 echo "Launching accelerate with 2 processes..."
 
+# Export effective runtime variables so the training script can record them reliably
+export LORA_RANK="$LORA_RANK"
+export LORA_ALPHA="$LORA_ALPHA"
+if [ "$RANDOM_FLIP_FLAG" != "" ]; then
+    export RANDOM_FLIP=1
+else
+    export RANDOM_FLIP=0
+fi
+export COLOR_JITTER="$COLOR_JITTER"
+
+# Build CLI args reliably (prevents word splitting when flags are empty)
+PYARGS=(
+    training/train_lora.py
+    --model_id "$MODEL_ID"
+    --manifest "$MANIFEST"
+    --output_dir "$OUTPUT_DIR"
+    --latent_cache_dir "$LATENT_CACHE_DIR"
+    --max_steps $MAX_STEPS
+    --epochs $EPOCHS
+    --batch_size $BATCH_SIZE
+    --lr $LR
+    --lora_rank $LORA_RANK
+    --lora_alpha $LORA_ALPHA
+    --frame_subsample $FRAME_SUBSAMPLE
+    --resize_width $RESIZE_W
+    --resize_height $RESIZE_H
+    --save_every $SAVE_EVERY
+)
+
+if [ "$RANDOM_FLIP_FLAG" != "" ]; then
+    PYARGS+=("$RANDOM_FLIP_FLAG")
+fi
+if [ "$COLOR_JITTER" != "" ]; then
+    PYARGS+=("--color_jitter" "$COLOR_JITTER")
+fi
+
 # Launch using Accelerate on 2 processes (GPUs on the same node)
 python -m accelerate.commands.launch \
-    --num_processes 2 \
-    training/train_lora.py \
-    --model_id "$MODEL_ID" \
-    --manifest "$MANIFEST" \
-    --output_dir "$OUTPUT_DIR" \
-    --latent_cache_dir "$LATENT_CACHE_DIR" \
-    --max_steps $MAX_STEPS \
-    --epochs $EPOCHS \
-    --batch_size $BATCH_SIZE \
-    --lr $LR \
-    --lora_rank $LORA_RANK \
-    --lora_alpha $LORA_ALPHA \
-    --frame_subsample $FRAME_SUBSAMPLE \
-    --resize_width $RESIZE_W \
-    --resize_height $RESIZE_H \
-    --save_every $SAVE_EVERY
+    --num_processes 2 "${PYARGS[@]}"
 
 EXIT_CODE=$?
 

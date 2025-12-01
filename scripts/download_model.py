@@ -22,5 +22,5 @@ local_path = "models/Wan2.1-T2V-1.3B-Local"
 print(f"\nSaving to {local_path}...")
 pipe.save_pretrained(local_path)
 
-print(f"\n✅ Model downloaded and saved to {local_path}")
+print(f"\n Model downloaded and saved to {local_path}")
 print(f"Use '--model_id models/Wan2.1-T2V-1.3B-Local' in training commands")

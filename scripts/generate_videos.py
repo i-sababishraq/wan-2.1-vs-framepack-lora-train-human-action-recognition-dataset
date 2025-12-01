@@ -16,13 +16,13 @@ from peft import LoraConfig, get_peft_model
 
 # Activity prompts for HAR dataset
 ACTIVITY_PROMPTS = {
-    "Clapping": "A realistic video showing a person clapping their hands",
-    "Meet and Split": "A realistic video showing two people meeting and then splitting apart",
-    "Sitting": "A realistic video showing a person sitting down",
-    "Standing Still": "A realistic video showing a person standing still",
-    "Walking": "A realistic video showing a person walking",
-    "Walking While Reading Book": "A realistic video showing a person walking while reading a book",
-    "Walking While Using Phone": "A realistic video showing a person walking while using a phone",
+    "Clapping": "A high-quality realistic video showing a person clapping their hands rhythmically, clear hand movements, well-lit indoor scene",
+    "Meet and Split": "A high-quality realistic video showing two people walking toward each other from opposite sides, meeting in the center, briefly interacting, then walking away in opposite directions, clear full-body view, well-lit environment",
+    "Sitting": "A high-quality realistic video showing a person approaching a chair and sitting down smoothly, clear body movements",
+    "Standing Still": "A high-quality realistic video showing a person standing still in a neutral pose, slight natural movements, clear stable framing",
+    "Walking": "A high-quality realistic video showing a person walking naturally forward, smooth gait, clear body movements, well-lit scene",
+    "Walking While Reading Book": "A high-quality realistic video showing a person walking while holding and reading a book, coordinated movement, clear view of both walking and reading actions",
+    "Walking While Using Phone": "A high-quality realistic video showing a person walking while looking at and using a mobile phone, clear coordinated movements",
 }
 
 
@@ -236,6 +236,20 @@ def main():
     if args.height % 16 != 0 or args.width % 16 != 0:
         parser.error(f"--height and --width must be multiples of 16")
     
+    # Handle common causes of poor quality reported in the Wan repo (e.g. Issue #233):
+    # - Extremely low num_inference_steps causes pixelation. Recommend >=50 for quality.
+    # - Guidance scale around 7.5 is a good default; extreme values can degrade fidelity.
+    if args.num_inference_steps < 50:
+        print(
+            f"Warning: num_inference_steps={args.num_inference_steps} is low and may produce "
+            "pixelated results. Overriding to 50 for better quality (see Wan issue #233)."
+        )
+        args.num_inference_steps = 50
+
+    # Inform about encoding/compression: using a low CRF (higher quality) is recommended
+    # when writing mp4 files. Our internal saver uses OpenCV's mp4v writer; if you use
+    # a different writer (ffmpeg/av) consider setting crf<=17 for higher quality outputs.
+
     # Load pipeline
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype = torch.bfloat16 if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else torch.float32

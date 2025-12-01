@@ -8,3 +8,4 @@ tqdm
 numpy
 torchvision
 huggingface-hub
+scipy>=1.9.0

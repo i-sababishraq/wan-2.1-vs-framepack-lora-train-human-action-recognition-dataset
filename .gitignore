@@ -85,3 +85,20 @@ Thumbs.db
 tmp/
 temp/
 *.tmp
+
+# Project specific exclusions
+.env
+WAN2.1_upstream/
+smoke_test.log
+ASSIGNMENT_REPORT.md
+CHANGES_SUMMARY.md
+CONTEXT_ENGINEERING.md
+DEPLOYMENT_CHECKLIST.md
+FRAMEPACK_ASSIGNMENT_BRAINSTORM.md
+FVD_BENCHMARK_SUMMARY.md
+NEXT_STEPS.md
+PIPELINE_FIXES.md
+PROJECT_INSIGHTS.md
+WAN_DATASET_NOTES.md
+fvd_results/
+framepack-6411/
