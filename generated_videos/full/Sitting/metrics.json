@@ -1,0 +1,37 @@
+{
+  "activity": "Sitting",
+  "generated": {
+    "baseline": [
+      "generated_videos/full/Sitting/baseline/Sitting_000_s1000.mp4",
+      "generated_videos/full/Sitting/baseline/Sitting_001_s1001.mp4",
+      "generated_videos/full/Sitting/baseline/Sitting_002_s1002.mp4",
+      "generated_videos/full/Sitting/baseline/Sitting_003_s1003.mp4",
+      "generated_videos/full/Sitting/baseline/Sitting_004_s1004.mp4",
+      "generated_videos/full/Sitting/baseline/Sitting_005_s1005.mp4",
+      "generated_videos/full/Sitting/baseline/Sitting_006_s1006.mp4",
+      "generated_videos/full/Sitting/baseline/Sitting_007_s1007.mp4",
+      "generated_videos/full/Sitting/baseline/Sitting_008_s1000.mp4",
+      "generated_videos/full/Sitting/baseline/Sitting_009_s1001.mp4"
+    ],
+    "lora": [
+      "generated_videos/full/Sitting/lora/Sitting_000_s1000.mp4",
+      "generated_videos/full/Sitting/lora/Sitting_001_s1001.mp4",
+      "generated_videos/full/Sitting/lora/Sitting_002_s1002.mp4",
+      "generated_videos/full/Sitting/lora/Sitting_003_s1003.mp4",
+      "generated_videos/full/Sitting/lora/Sitting_004_s1004.mp4",
+      "generated_videos/full/Sitting/lora/Sitting_005_s1005.mp4",
+      "generated_videos/full/Sitting/lora/Sitting_006_s1006.mp4",
+      "generated_videos/full/Sitting/lora/Sitting_007_s1007.mp4",
+      "generated_videos/full/Sitting/lora/Sitting_008_s1000.mp4",
+      "generated_videos/full/Sitting/lora/Sitting_009_s1001.mp4"
+    ]
+  },
+  "lpips": {
+    "baseline": null,
+    "lora": null
+  },
+  "fid": {
+    "baseline": null,
+    "lora": null
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "Meet and Split": {
+    "fid": 308.85699486976335,
+    "fvd_approx": 74.73308341864005,
+    "lpips": 0.6485360661149027,
+    "num_baseline_videos": 10,
+    "num_lora_videos": 10
+  },
+  "Walking While Reading Book": {
+    "fid": 339.6275147024448,
+    "fvd_approx": 151.85067228548596,
+    "lpips": 0.6388767835497855,
+    "num_baseline_videos": 10,
+    "num_lora_videos": 10
+  },
+  "Standing Still": {
+    "fid": 292.92560169990026,
+    "fvd_approx": 36.3159594549598,
+    "lpips": 0.659724793434143,
+    "num_baseline_videos": 10,
+    "num_lora_videos": 10
+  }
+}

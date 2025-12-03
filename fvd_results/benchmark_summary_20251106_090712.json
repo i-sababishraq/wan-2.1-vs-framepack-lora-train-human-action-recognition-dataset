@@ -1,0 +1,16 @@
+{
+  "timestamp": "20251106_090712",
+  "reference_dir": "data/reference_videos_mp4",
+  "methods": {
+    "wan2.1_i2v": {
+      "fvd": 40.73334995986221,
+      "num_videos": 70,
+      "output_file": "fvd_results/fvd_wan2.1_20251106_090712.json"
+    },
+    "framepack_i2v": {
+      "fvd": 32.491405737222095,
+      "num_videos": 70,
+      "output_file": "fvd_results/fvd_framepack_20251106_090712.json"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "fvd": 32.491405737222095,
+  "num_real_videos": 70,
+  "num_generated_videos": 70,
+  "real_features_shape": [
+    70,
+    1024
+  ],
+  "generated_features_shape": [
+    70,
+    1024
+  ],
+  "real_videos_dir": "data/reference_videos_mp4",
+  "generated_videos_dir": "generated_videos/i2v_framepack_480p"
+}

@@ -1,0 +1,30 @@
+{
+  "Clapping": {
+    "fid": 324.1181483460919,
+    "fvd_approx": 100.44977147511752,
+    "lpips": 0.5339845046401024,
+    "num_baseline_videos": 10,
+    "num_lora_videos": 10
+  },
+  "Walking": {
+    "fid": 299.36242592453164,
+    "fvd_approx": 135.7352247001593,
+    "lpips": 0.603901713490486,
+    "num_baseline_videos": 10,
+    "num_lora_videos": 10
+  },
+  "Sitting": {
+    "fid": 337.7510642578922,
+    "fvd_approx": 71.68899004606126,
+    "lpips": 0.6351359659433364,
+    "num_baseline_videos": 10,
+    "num_lora_videos": 10
+  },
+  "Walking While Using Phone": {
+    "fid": 367.89535523214244,
+    "fvd_approx": 116.6996906822772,
+    "lpips": 0.6342355296015739,
+    "num_baseline_videos": 10,
+    "num_lora_videos": 10
+  }
+}

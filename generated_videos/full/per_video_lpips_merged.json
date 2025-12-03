@@ -1,0 +1,366 @@
+{
+  "Clapping": [
+    {
+      "baseline": "generated_videos/full/Clapping/baseline/Clapping_000_s1000.mp4",
+      "lora": "generated_videos/full/Clapping/lora/Clapping_000_s1000.mp4",
+      "lpips": 0.49758994281291963
+    },
+    {
+      "baseline": "generated_videos/full/Clapping/baseline/Clapping_001_s1001.mp4",
+      "lora": "generated_videos/full/Clapping/lora/Clapping_001_s1001.mp4",
+      "lpips": 0.5810564309358597
+    },
+    {
+      "baseline": "generated_videos/full/Clapping/baseline/Clapping_002_s1002.mp4",
+      "lora": "generated_videos/full/Clapping/lora/Clapping_002_s1002.mp4",
+      "lpips": 0.5253797203302384
+    },
+    {
+      "baseline": "generated_videos/full/Clapping/baseline/Clapping_003_s1003.mp4",
+      "lora": "generated_videos/full/Clapping/lora/Clapping_003_s1003.mp4",
+      "lpips": 0.550678351521492
+    },
+    {
+      "baseline": "generated_videos/full/Clapping/baseline/Clapping_004_s1004.mp4",
+      "lora": "generated_videos/full/Clapping/lora/Clapping_004_s1004.mp4",
+      "lpips": 0.4715219348669052
+    },
+    {
+      "baseline": "generated_videos/full/Clapping/baseline/Clapping_005_s1005.mp4",
+      "lora": "generated_videos/full/Clapping/lora/Clapping_005_s1005.mp4",
+      "lpips": 0.5117228150367736
+    },
+    {
+      "baseline": "generated_videos/full/Clapping/baseline/Clapping_006_s1006.mp4",
+      "lora": "generated_videos/full/Clapping/lora/Clapping_006_s1006.mp4",
+      "lpips": 0.5416455686092376
+    },
+    {
+      "baseline": "generated_videos/full/Clapping/baseline/Clapping_007_s1007.mp4",
+      "lora": "generated_videos/full/Clapping/lora/Clapping_007_s1007.mp4",
+      "lpips": 0.5484177321195602
+    },
+    {
+      "baseline": "generated_videos/full/Clapping/baseline/Clapping_008_s1000.mp4",
+      "lora": "generated_videos/full/Clapping/lora/Clapping_008_s1000.mp4",
+      "lpips": 0.5080345928668976
+    },
+    {
+      "baseline": "generated_videos/full/Clapping/baseline/Clapping_009_s1001.mp4",
+      "lora": "generated_videos/full/Clapping/lora/Clapping_009_s1001.mp4",
+      "lpips": 0.6037979573011398
+    }
+  ],
+  "Walking": [
+    {
+      "baseline": "generated_videos/full/Walking/baseline/Walking_000_s1000.mp4",
+      "lora": "generated_videos/full/Walking/lora/Walking_000_s1000.mp4",
+      "lpips": 0.5875549256801605
+    },
+    {
+      "baseline": "generated_videos/full/Walking/baseline/Walking_001_s1001.mp4",
+      "lora": "generated_videos/full/Walking/lora/Walking_001_s1001.mp4",
+      "lpips": 0.5582936257123947
+    },
+    {
+      "baseline": "generated_videos/full/Walking/baseline/Walking_002_s1002.mp4",
+      "lora": "generated_videos/full/Walking/lora/Walking_002_s1002.mp4",
+      "lpips": 0.6339787930250168
+    },
+    {
+      "baseline": "generated_videos/full/Walking/baseline/Walking_003_s1003.mp4",
+      "lora": "generated_videos/full/Walking/lora/Walking_003_s1003.mp4",
+      "lpips": 0.6676212549209595
+    },
+    {
+      "baseline": "generated_videos/full/Walking/baseline/Walking_004_s1004.mp4",
+      "lora": "generated_videos/full/Walking/lora/Walking_004_s1004.mp4",
+      "lpips": 0.6574615716934205
+    },
+    {
+      "baseline": "generated_videos/full/Walking/baseline/Walking_005_s1005.mp4",
+      "lora": "generated_videos/full/Walking/lora/Walking_005_s1005.mp4",
+      "lpips": 0.6558765888214111
+    },
+    {
+      "baseline": "generated_videos/full/Walking/baseline/Walking_006_s1006.mp4",
+      "lora": "generated_videos/full/Walking/lora/Walking_006_s1006.mp4",
+      "lpips": 0.5921575903892518
+    },
+    {
+      "baseline": "generated_videos/full/Walking/baseline/Walking_007_s1007.mp4",
+      "lora": "generated_videos/full/Walking/lora/Walking_007_s1007.mp4",
+      "lpips": 0.5743311092257499
+    },
+    {
+      "baseline": "generated_videos/full/Walking/baseline/Walking_008_s1000.mp4",
+      "lora": "generated_videos/full/Walking/lora/Walking_008_s1000.mp4",
+      "lpips": 0.5908133685588837
+    },
+    {
+      "baseline": "generated_videos/full/Walking/baseline/Walking_009_s1001.mp4",
+      "lora": "generated_videos/full/Walking/lora/Walking_009_s1001.mp4",
+      "lpips": 0.520928306877613
+    }
+  ],
+  "Sitting": [
+    {
+      "baseline": "generated_videos/full/Sitting/baseline/Sitting_000_s1000.mp4",
+      "lora": "generated_videos/full/Sitting/lora/Sitting_000_s1000.mp4",
+      "lpips": 0.5975145488977432
+    },
+    {
+      "baseline": "generated_videos/full/Sitting/baseline/Sitting_001_s1001.mp4",
+      "lora": "generated_videos/full/Sitting/lora/Sitting_001_s1001.mp4",
+      "lpips": 0.6562818586826324
+    },
+    {
+      "baseline": "generated_videos/full/Sitting/baseline/Sitting_002_s1002.mp4",
+      "lora": "generated_videos/full/Sitting/lora/Sitting_002_s1002.mp4",
+      "lpips": 0.6202064573764801
+    },
+    {
+      "baseline": "generated_videos/full/Sitting/baseline/Sitting_003_s1003.mp4",
+      "lora": "generated_videos/full/Sitting/lora/Sitting_003_s1003.mp4",
+      "lpips": 0.6143870651721954
+    },
+    {
+      "baseline": "generated_videos/full/Sitting/baseline/Sitting_004_s1004.mp4",
+      "lora": "generated_videos/full/Sitting/lora/Sitting_004_s1004.mp4",
+      "lpips": 0.6184147834777832
+    },
+    {
+      "baseline": "generated_videos/full/Sitting/baseline/Sitting_005_s1005.mp4",
+      "lora": "generated_videos/full/Sitting/lora/Sitting_005_s1005.mp4",
+      "lpips": 0.6114423930644989
+    },
+    {
+      "baseline": "generated_videos/full/Sitting/baseline/Sitting_006_s1006.mp4",
+      "lora": "generated_videos/full/Sitting/lora/Sitting_006_s1006.mp4",
+      "lpips": 0.6676609665155411
+    },
+    {
+      "baseline": "generated_videos/full/Sitting/baseline/Sitting_007_s1007.mp4",
+      "lora": "generated_videos/full/Sitting/lora/Sitting_007_s1007.mp4",
+      "lpips": 0.7038163810968399
+    },
+    {
+      "baseline": "generated_videos/full/Sitting/baseline/Sitting_008_s1000.mp4",
+      "lora": "generated_videos/full/Sitting/lora/Sitting_008_s1000.mp4",
+      "lpips": 0.5926059037446976
+    },
+    {
+      "baseline": "generated_videos/full/Sitting/baseline/Sitting_009_s1001.mp4",
+      "lora": "generated_videos/full/Sitting/lora/Sitting_009_s1001.mp4",
+      "lpips": 0.669029301404953
+    }
+  ],
+  "Walking While Using Phone": [
+    {
+      "baseline": "generated_videos/full/Walking_While_Using_Phone/baseline/Walking_While_Using_Phone_000_s1000.mp4",
+      "lora": "generated_videos/full/Walking_While_Using_Phone/lora/Walking_While_Using_Phone_000_s1000.mp4",
+      "lpips": 0.6359280258417129
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Using_Phone/baseline/Walking_While_Using_Phone_001_s1001.mp4",
+      "lora": "generated_videos/full/Walking_While_Using_Phone/lora/Walking_While_Using_Phone_001_s1001.mp4",
+      "lpips": 0.6020289897918701
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Using_Phone/baseline/Walking_While_Using_Phone_002_s1002.mp4",
+      "lora": "generated_videos/full/Walking_While_Using_Phone/lora/Walking_While_Using_Phone_002_s1002.mp4",
+      "lpips": 0.6091002106666565
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Using_Phone/baseline/Walking_While_Using_Phone_003_s1003.mp4",
+      "lora": "generated_videos/full/Walking_While_Using_Phone/lora/Walking_While_Using_Phone_003_s1003.mp4",
+      "lpips": 0.6783781230449677
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Using_Phone/baseline/Walking_While_Using_Phone_004_s1004.mp4",
+      "lora": "generated_videos/full/Walking_While_Using_Phone/lora/Walking_While_Using_Phone_004_s1004.mp4",
+      "lpips": 0.6588390737771987
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Using_Phone/baseline/Walking_While_Using_Phone_005_s1005.mp4",
+      "lora": "generated_videos/full/Walking_While_Using_Phone/lora/Walking_While_Using_Phone_005_s1005.mp4",
+      "lpips": 0.6263180345296859
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Using_Phone/baseline/Walking_While_Using_Phone_006_s1006.mp4",
+      "lora": "generated_videos/full/Walking_While_Using_Phone/lora/Walking_While_Using_Phone_006_s1006.mp4",
+      "lpips": 0.598418328166008
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Using_Phone/baseline/Walking_While_Using_Phone_007_s1007.mp4",
+      "lora": "generated_videos/full/Walking_While_Using_Phone/lora/Walking_While_Using_Phone_007_s1007.mp4",
+      "lpips": 0.6547177106142044
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Using_Phone/baseline/Walking_While_Using_Phone_008_s1000.mp4",
+      "lora": "generated_videos/full/Walking_While_Using_Phone/lora/Walking_While_Using_Phone_008_s1000.mp4",
+      "lpips": 0.6764201700687409
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Using_Phone/baseline/Walking_While_Using_Phone_009_s1001.mp4",
+      "lora": "generated_videos/full/Walking_While_Using_Phone/lora/Walking_While_Using_Phone_009_s1001.mp4",
+      "lpips": 0.6022066295146942
+    }
+  ],
+  "Meet and Split": [
+    {
+      "baseline": "generated_videos/full/Meet_and_Split/baseline/Meet_and_Split_000_s1000.mp4",
+      "lora": "generated_videos/full/Meet_and_Split/lora/Meet_and_Split_000_s1000.mp4",
+      "lpips": 0.7305628627538681
+    },
+    {
+      "baseline": "generated_videos/full/Meet_and_Split/baseline/Meet_and_Split_001_s1001.mp4",
+      "lora": "generated_videos/full/Meet_and_Split/lora/Meet_and_Split_001_s1001.mp4",
+      "lpips": 0.5745806068181991
+    },
+    {
+      "baseline": "generated_videos/full/Meet_and_Split/baseline/Meet_and_Split_002_s1002.mp4",
+      "lora": "generated_videos/full/Meet_and_Split/lora/Meet_and_Split_002_s1002.mp4",
+      "lpips": 0.6516713052988052
+    },
+    {
+      "baseline": "generated_videos/full/Meet_and_Split/baseline/Meet_and_Split_003_s1003.mp4",
+      "lora": "generated_videos/full/Meet_and_Split/lora/Meet_and_Split_003_s1003.mp4",
+      "lpips": 0.6446812927722931
+    },
+    {
+      "baseline": "generated_videos/full/Meet_and_Split/baseline/Meet_and_Split_004_s1004.mp4",
+      "lora": "generated_videos/full/Meet_and_Split/lora/Meet_and_Split_004_s1004.mp4",
+      "lpips": 0.6808258175849915
+    },
+    {
+      "baseline": "generated_videos/full/Meet_and_Split/baseline/Meet_and_Split_005_s1005.mp4",
+      "lora": "generated_videos/full/Meet_and_Split/lora/Meet_and_Split_005_s1005.mp4",
+      "lpips": 0.5702465564012528
+    },
+    {
+      "baseline": "generated_videos/full/Meet_and_Split/baseline/Meet_and_Split_006_s1006.mp4",
+      "lora": "generated_videos/full/Meet_and_Split/lora/Meet_and_Split_006_s1006.mp4",
+      "lpips": 0.6295887053012847
+    },
+    {
+      "baseline": "generated_videos/full/Meet_and_Split/baseline/Meet_and_Split_007_s1007.mp4",
+      "lora": "generated_videos/full/Meet_and_Split/lora/Meet_and_Split_007_s1007.mp4",
+      "lpips": 0.7348953604698181
+    },
+    {
+      "baseline": "generated_videos/full/Meet_and_Split/baseline/Meet_and_Split_008_s1000.mp4",
+      "lora": "generated_videos/full/Meet_and_Split/lora/Meet_and_Split_008_s1000.mp4",
+      "lpips": 0.7108968883752823
+    },
+    {
+      "baseline": "generated_videos/full/Meet_and_Split/baseline/Meet_and_Split_009_s1001.mp4",
+      "lora": "generated_videos/full/Meet_and_Split/lora/Meet_and_Split_009_s1001.mp4",
+      "lpips": 0.5574112653732299
+    }
+  ],
+  "Walking While Reading Book": [
+    {
+      "baseline": "generated_videos/full/Walking_While_Reading_Book/baseline/Walking_While_Reading_Book_000_s1000.mp4",
+      "lora": "generated_videos/full/Walking_While_Reading_Book/lora/Walking_While_Reading_Book_000_s1000.mp4",
+      "lpips": 0.5933700174093246
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Reading_Book/baseline/Walking_While_Reading_Book_001_s1001.mp4",
+      "lora": "generated_videos/full/Walking_While_Reading_Book/lora/Walking_While_Reading_Book_001_s1001.mp4",
+      "lpips": 0.662839087843895
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Reading_Book/baseline/Walking_While_Reading_Book_002_s1002.mp4",
+      "lora": "generated_videos/full/Walking_While_Reading_Book/lora/Walking_While_Reading_Book_002_s1002.mp4",
+      "lpips": 0.5578033477067947
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Reading_Book/baseline/Walking_While_Reading_Book_003_s1003.mp4",
+      "lora": "generated_videos/full/Walking_While_Reading_Book/lora/Walking_While_Reading_Book_003_s1003.mp4",
+      "lpips": 0.6935781538486481
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Reading_Book/baseline/Walking_While_Reading_Book_004_s1004.mp4",
+      "lora": "generated_videos/full/Walking_While_Reading_Book/lora/Walking_While_Reading_Book_004_s1004.mp4",
+      "lpips": 0.6226461291313171
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Reading_Book/baseline/Walking_While_Reading_Book_005_s1005.mp4",
+      "lora": "generated_videos/full/Walking_While_Reading_Book/lora/Walking_While_Reading_Book_005_s1005.mp4",
+      "lpips": 0.6846850037574768
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Reading_Book/baseline/Walking_While_Reading_Book_006_s1006.mp4",
+      "lora": "generated_videos/full/Walking_While_Reading_Book/lora/Walking_While_Reading_Book_006_s1006.mp4",
+      "lpips": 0.6681687474250794
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Reading_Book/baseline/Walking_While_Reading_Book_007_s1007.mp4",
+      "lora": "generated_videos/full/Walking_While_Reading_Book/lora/Walking_While_Reading_Book_007_s1007.mp4",
+      "lpips": 0.6343299657106399
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Reading_Book/baseline/Walking_While_Reading_Book_008_s1000.mp4",
+      "lora": "generated_videos/full/Walking_While_Reading_Book/lora/Walking_While_Reading_Book_008_s1000.mp4",
+      "lpips": 0.6231397002935409
+    },
+    {
+      "baseline": "generated_videos/full/Walking_While_Reading_Book/baseline/Walking_While_Reading_Book_009_s1001.mp4",
+      "lora": "generated_videos/full/Walking_While_Reading_Book/lora/Walking_While_Reading_Book_009_s1001.mp4",
+      "lpips": 0.6482076823711396
+    }
+  ],
+  "Standing Still": [
+    {
+      "baseline": "generated_videos/full/Standing_Still/baseline/Standing_Still_000_s1000.mp4",
+      "lora": "generated_videos/full/Standing_Still/lora/Standing_Still_000_s1000.mp4",
+      "lpips": 0.6023815274238586
+    },
+    {
+      "baseline": "generated_videos/full/Standing_Still/baseline/Standing_Still_001_s1001.mp4",
+      "lora": "generated_videos/full/Standing_Still/lora/Standing_Still_001_s1001.mp4",
+      "lpips": 0.6445722252130508
+    },
+    {
+      "baseline": "generated_videos/full/Standing_Still/baseline/Standing_Still_002_s1002.mp4",
+      "lora": "generated_videos/full/Standing_Still/lora/Standing_Still_002_s1002.mp4",
+      "lpips": 0.6829386919736862
+    },
+    {
+      "baseline": "generated_videos/full/Standing_Still/baseline/Standing_Still_003_s1003.mp4",
+      "lora": "generated_videos/full/Standing_Still/lora/Standing_Still_003_s1003.mp4",
+      "lpips": 0.6866020351648331
+    },
+    {
+      "baseline": "generated_videos/full/Standing_Still/baseline/Standing_Still_004_s1004.mp4",
+      "lora": "generated_videos/full/Standing_Still/lora/Standing_Still_004_s1004.mp4",
+      "lpips": 0.6589614927768708
+    },
+    {
+      "baseline": "generated_videos/full/Standing_Still/baseline/Standing_Still_005_s1005.mp4",
+      "lora": "generated_videos/full/Standing_Still/lora/Standing_Still_005_s1005.mp4",
+      "lpips": 0.676427710056305
+    },
+    {
+      "baseline": "generated_videos/full/Standing_Still/baseline/Standing_Still_006_s1006.mp4",
+      "lora": "generated_videos/full/Standing_Still/lora/Standing_Still_006_s1006.mp4",
+      "lpips": 0.6919724255800247
+    },
+    {
+      "baseline": "generated_videos/full/Standing_Still/baseline/Standing_Still_007_s1007.mp4",
+      "lora": "generated_videos/full/Standing_Still/lora/Standing_Still_007_s1007.mp4",
+      "lpips": 0.7495635360479355
+    },
+    {
+      "baseline": "generated_videos/full/Standing_Still/baseline/Standing_Still_008_s1000.mp4",
+      "lora": "generated_videos/full/Standing_Still/lora/Standing_Still_008_s1000.mp4",
+      "lpips": 0.6255260229110717
+    },
+    {
+      "baseline": "generated_videos/full/Standing_Still/baseline/Standing_Still_009_s1001.mp4",
+      "lora": "generated_videos/full/Standing_Still/lora/Standing_Still_009_s1001.mp4",
+      "lpips": 0.5783022671937943
+    }
+  ]
+}

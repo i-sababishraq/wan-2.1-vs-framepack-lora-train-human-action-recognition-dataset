@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/anvil/projects/x-soc250046/x-sishraq/WAN 2.1/training/train_lora.py", line 33, in <module>
+    from training.dataset import ClipDataset, collate_fn
+ModuleNotFoundError: No module named 'training'
